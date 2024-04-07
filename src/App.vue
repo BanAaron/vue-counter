@@ -2,20 +2,33 @@
 import {ref} from 'vue'
 
 let total = ref(0)
-let inputNum = ref(1)
+let input = ref(1)
+let error = ref("")
 
 const increment = () => {
-  const parsed = parseInt(inputNum.value)
+  const parsed = parseInt(input.value)
   if (!isNaN(parsed)) {
     total.value += parsed
+    error.value = ""
+  } else {
+    error.value = 'input is not not a valid number'
   }
 }
 
 const decrement = () => {
-  const parsed = parseInt(inputNum.value)
+  const parsed = parseInt(input.value)
   if (!isNaN(parsed)) {
     total.value -= parsed
+  } else {
+    error.value = ""
+    error.value = 'input is not not a valid number'
   }
+}
+
+const reset = () => {
+  total.value = 0
+  input.value = 1
+  error.value = ""
 }
 </script>
 
@@ -25,9 +38,11 @@ const decrement = () => {
       <h1>Count: {{ total }}</h1>
       <div id="inputs">
         <button @click="decrement">-</button>
-        <input type="number" v-model="inputNum">
+        <input type="number" v-model="input">
         <button @click="increment">+</button>
       </div>
+      <p class="error" v-if="error"> {{ error }}</p>
+      <button @click="reset">Reset</button>
     </div>
   </main>
 </template>
@@ -55,6 +70,7 @@ main {
 
 #inputs {
   display: flex;
+  width: fit-content;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -66,5 +82,11 @@ main {
     text-align: center;
     justify-content: center;
   }
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  font-family: "Fira Code", Inconsolata, monospace;
 }
 </style>
