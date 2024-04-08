@@ -1,9 +1,9 @@
 <script setup>
 import {ref} from 'vue'
 
-let total = ref(0)
-let input = ref(1)
-let error = ref("")
+const total = ref(0)
+const input = ref(1)
+const error = ref("")
 
 const increment = () => {
   const parsed = parseInt(input.value)
@@ -19,8 +19,8 @@ const decrement = () => {
   const parsed = parseInt(input.value)
   if (!isNaN(parsed)) {
     total.value -= parsed
-  } else {
     error.value = ""
+  } else {
     error.value = 'input is not not a valid number'
   }
 }
@@ -35,24 +35,19 @@ const reset = () => {
 <template>
   <main>
     <div id="container">
-      <h1>Count: {{ total }}</h1>
+      <h1>Count: {{ total.toLocaleString() }}</h1>
       <div id="inputs">
-        <button @click="decrement">-</button>
-        <input type="number" v-model="input">
-        <button @click="increment">+</button>
+        <Button @click="decrement">-</Button>
+        <InputNumber type="number" v-model="input"/>
+        <Button @click="increment">+</Button>
       </div>
       <p class="error" v-if="error"> {{ error }}</p>
-      <button @click="reset">Reset</button>
+      <Button @click="reset">Reset</Button>
     </div>
   </main>
 </template>
 
 <style scoped lang="scss">
-main {
-  background-color: black;
-  color: aliceblue;
-}
-
 #container {
   height: 100vh;
   width: 100vw;
