@@ -12,7 +12,6 @@ const regions = ref(Object.keys(regionDivisionMap).sort())
 let filteredDivisions = [].concat(...Object.values(regionDivisionMap)).sort()
 
 watch(()=>selectedRegions.value, ()=>{
-  // if there is no region selected we want to make sure all divisions are available
   if (selectedRegions.value.length === 0) {
     filteredDivisions = [].concat(...Object.values(regionDivisionMap)).sort()
   }
@@ -20,11 +19,14 @@ watch(()=>selectedRegions.value, ()=>{
   const cachedSelectedDivisions = selectedDivisions.value
   selectedDivisions.value = []
   filteredDivisions = []
+  // add all the divisions for each selected region
   for (const region of selectedRegions.value) {
     if (regionDivisionMap[region]) {
       filteredDivisions.push(...regionDivisionMap[region])
     }
   }
+  // then check the cached divisions are valid compared the selected regions
+  // and select them if so
   for (const division of cachedSelectedDivisions) {
     for (const region of selectedRegions.value) {
       if (regionDivisionMap[region].includes(division)) {
